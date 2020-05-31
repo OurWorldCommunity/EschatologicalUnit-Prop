@@ -21,3 +21,4 @@ items:
     time: 60
     cmd:
     - say 使用完成
+    msg: 测试语句

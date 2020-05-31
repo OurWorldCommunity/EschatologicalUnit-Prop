@@ -133,6 +133,7 @@ class ItemData extends BukkitRunnable
 	public int time;
 	public HashMap<String,Integer> PlayerTimeMap = new HashMap<String,Integer>();
 	public String ID;
+	public String msg;
 	public ItemData(String ID)
 	{
 		this.ID=ID;
@@ -143,7 +144,7 @@ class ItemData extends BukkitRunnable
 		{
 			PlayerTimeMap.put(p.getName(), time);
 		}
-		smyhw.loger.info("fin");
+		this.msg = smyhw.configer.getString("items."+ID+".msg");
 		this.runTaskTimer(smyhw.smyhw_,0,10);
 	}
 	
@@ -167,7 +168,7 @@ class ItemData extends BukkitRunnable
 			if(p.isSneaking() && p.getInventory().getItemInMainHand() .equals( data)) 
 			{
 				int temp1 = PlayerTimeMap.get(p.getName())-10;
-				p.sendTitle("时间:",temp1+"");
+				p.sendTitle(msg,"剩余时间:"+temp1);
 				PlayerTimeMap.put(p.getName(), temp1);
 			}
 			else
