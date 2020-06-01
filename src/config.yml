@@ -7,10 +7,15 @@ config:
     prefix: "[EschatologicalUnit]"
 
 
-#物品信息
+#数据信息
 items:
-   test:
-    data:
+  test:
+ #是否忽视位置限制
+    anyLoc: true  
+#是否忽视手上物品限制
+    anyItem: false  
+#物品信息(请使用euP set <ID> 来将你手上的物品添加至此)
+    data:   
       type: IRON_BARDING
       meta:
         ==: ItemMeta
@@ -18,7 +23,14 @@ items:
         display-name: test
         lore:
         - test
-    time: 60
+#位置限制
+    Loc:
+      x: 100
+      y: 100
+      z: 100
+#距离完成的时间
+    time: 60   
+#该条目达成后执行的指令
     cmd:
     - say 使用完成
     msg: 测试语句

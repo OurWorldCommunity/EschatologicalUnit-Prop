@@ -134,11 +134,21 @@ class ItemData extends BukkitRunnable
 	public HashMap<String,Integer> PlayerTimeMap = new HashMap<String,Integer>();
 	public String ID;
 	public String msg;
+	public boolean anyItem;
+	public boolean anyLoc;
+	public int x;
+	public int y;
+	public int z;
 	public ItemData(String ID)
 	{
 		this.ID=ID;
 		data = smyhw.configer.getItemStack("items."+ID+".data");
 		time = smyhw.configer.getInt("items."+ID+".time");
+		anyItem = smyhw.configer.getBoolean("items."+ID+".anyItem");
+		anyLoc = smyhw.configer.getBoolean("items."+ID+".anyLoc");
+		x = smyhw.configer.getInt("items."+ID+".Loc.x");
+		y = smyhw.configer.getInt("items."+ID+".Loc.y");
+		z = smyhw.configer.getInt("items."+ID+".Loc.z");
 		Collection<? extends Player> player_list = Bukkit.getOnlinePlayers();
 		for(Player p : player_list)
 		{
@@ -154,8 +164,20 @@ class ItemData extends BukkitRunnable
 		Collection<? extends Player> player_list = Bukkit.getOnlinePlayers();
 		for(Player p : player_list)
 		{
+			Location temp2 = p.getLocation();
+			int px = (int) temp2.getX();
+			int py = (int) temp2.getY();
+			int pz = (int) temp2.getZ();
+			if(!anyLoc)
+			{//筛选 坐标
+				if(px ==x && py == y && pz ==z) {}else{reset(p.getName());continue;}
+			}
+			if(!anyItem)
+			{//筛选 物品
+				if(p.getInventory().getItemInMainHand() .equals( data)) {}else{reset(p.getName());continue;}
+			}
 			if(PlayerTimeMap.get(p.getName())!=null && PlayerTimeMap.get(p.getName()) <= 0 )
-			{
+			{//是否计时已经归零
 				PlayerTimeMap.put(p.getName(), time);
 				List<String> cmdList = smyhw.configer.getStringList("items."+ID+".cmd");
 				for(String cmd : cmdList)
@@ -164,17 +186,18 @@ class ItemData extends BukkitRunnable
 				}
 				continue;
 			}
-			//p.isSneaking() &&
-			if(p.isSneaking() && p.getInventory().getItemInMainHand() .equals( data)) 
-			{
+			if(p.isSneaking() ) 
+			{//是否按了shift
 				int temp1 = PlayerTimeMap.get(p.getName())-10;
 				p.sendTitle(msg,"剩余时间:"+temp1);
 				PlayerTimeMap.put(p.getName(), temp1);
 			}
-			else
-			{
-				PlayerTimeMap.put(p.getName(), time);
-			}
+			else{reset(p.getName());continue;}
 		}
+	}
+	
+	void reset(String PlayerName)
+	{//将玩家计时器重置
+		PlayerTimeMap.put(PlayerName, time);
 	}
 }
