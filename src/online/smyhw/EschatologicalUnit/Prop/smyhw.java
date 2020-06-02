@@ -99,6 +99,7 @@ public class smyhw extends JavaPlugin implements Listener
                 	configer.set("items."+args[1]+".data", is);
                 	configer.set("items."+args[1]+".Loc.x", 0);
                 	configer.set("items."+args[1]+".Loc.y", 0);
+                	configer.set("items."+args[1]+".Loc.z", 0);
                 	configer.set("items."+args[1]+".anyLoc", true);
                 	configer.set("items."+args[1]+".anyItem", false);
                 	configer.set("items."+args[1]+".time", 60);
