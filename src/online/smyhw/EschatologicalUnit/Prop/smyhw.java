@@ -97,6 +97,13 @@ public class smyhw extends JavaPlugin implements Listener
                 	ItemStack is = p.getInventory().getItemInMainHand();
                 	Map m = is.serialize();
                 	configer.set("items."+args[1]+".data", is);
+                	configer.set("items."+args[1]+".Loc.x", 0);
+                	configer.set("items."+args[1]+".Loc.y", 0);
+                	configer.set("items."+args[1]+".anyLoc", true);
+                	configer.set("items."+args[1]+".anyItem", false);
+                	configer.set("items."+args[1]+".time", 60);
+                	configer.set("items."+args[1]+".msg", "剩余时间");
+                	configer.set("items."+args[1]+".cmd", new ArrayList());
                 	saveConfig();
                 	sender.sendMessage(prefix+"设置成功，您可能需要重载服务器");
                 	return true;
