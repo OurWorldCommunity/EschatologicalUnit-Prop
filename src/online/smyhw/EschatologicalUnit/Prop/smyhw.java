@@ -192,6 +192,7 @@ class ItemData extends BukkitRunnable
 				List<String> cmdList = smyhw.configer.getStringList("items."+ID+".cmd");
 				for(String cmd : cmdList)
 				{
+					cmd = cmd.replaceAll("%player%", p.getName());
 					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),cmd);
 				}
 				continue;
