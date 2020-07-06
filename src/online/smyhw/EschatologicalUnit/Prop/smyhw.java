@@ -178,7 +178,9 @@ class ItemData extends BukkitRunnable
 			int pz = (int) temp2.getZ();
 			if(!anyLoc)
 			{//筛选 坐标
-				if(px ==x && py == y && pz ==z) {}else{reset(p.getName());continue;}
+				if( (px < (x-1)) || (px > (x+1)) ) { reset(p.getName()); continue; }
+				if( (py < (y-1)) || (py > (y+1)) ) { reset(p.getName()); continue; }
+				if( (pz < (z-1)) || (pz > (z+1)) ) { reset(p.getName()); continue; }
 			}
 			if(!anyItem)
 			{//筛选 物品
