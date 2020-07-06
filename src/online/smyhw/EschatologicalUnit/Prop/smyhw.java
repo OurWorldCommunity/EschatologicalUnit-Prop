@@ -117,6 +117,18 @@ public class smyhw extends JavaPlugin implements Listener
                 	((Player)sender).getInventory().setItemInMainHand(data);
                 	return true;
                 }
+                case "disable":
+                {//禁用某个实例
+                	if(args.length<2) {CSBZ(sender);return true;}
+                	itemList.get(args[1]).activation = false;
+                	return true;
+                }
+                case "enable":
+                {//启用某个实例
+                	if(args.length<2) {CSBZ(sender);return true;}
+                	itemList.get(args[1]).activation = true;
+                	return true;
+                }
                 default:
                 	CSBZ(sender);
                 }
@@ -147,6 +159,7 @@ class ItemData extends BukkitRunnable
 	public int x;
 	public int y;
 	public int z;
+	public boolean activation =  true;
 	public ItemData(String ID)
 	{
 		this.ID=ID;
@@ -169,6 +182,7 @@ class ItemData extends BukkitRunnable
 	@Override
 	public void run() 
 	{
+		if(!activation) {return;}
 		Collection<? extends Player> player_list = Bukkit.getOnlinePlayers();
 		for(Player p : player_list)
 		{
