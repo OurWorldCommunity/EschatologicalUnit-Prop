@@ -120,13 +120,19 @@ public class smyhw extends JavaPlugin implements Listener
                 case "disable":
                 {//禁用某个实例
                 	if(args.length<2) {CSBZ(sender);return true;}
-                	itemList.get(args[1]).activation = false;
+                	ItemData temp1 = itemList.get(args[1]);
+                	if(temp1==null) {sender.sendMessage(prefix+"实例<"+args[1]+">不存在");return true;}
+                	temp1.activation = false;
+                	sender.sendMessage(prefix+"实例<"+args[1]+">已禁用");
                 	return true;
                 }
                 case "enable":
                 {//启用某个实例
                 	if(args.length<2) {CSBZ(sender);return true;}
-                	itemList.get(args[1]).activation = true;
+                	ItemData temp1 = itemList.get(args[1]);
+                	if(temp1==null) {sender.sendMessage(prefix+"实例<"+args[1]+">不存在");return true;}
+                	temp1.activation = true;
+                	sender.sendMessage(prefix+"实例<"+args[1]+">已启用");
                 	return true;
                 }
                 default:
