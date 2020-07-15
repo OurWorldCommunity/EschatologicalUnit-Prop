@@ -224,8 +224,6 @@ class ItemData extends BukkitRunnable
 					{reset(p.getName());continue;}//如果小于，gg
 					//否则为物品匹配，继续处理
 				}
-				else
-				{reset(p.getName());continue;}
 			}
 			if(PlayerTimeMap.get(p.getName())!=null && PlayerTimeMap.get(p.getName()) <= 0 )
 			{//是否计时已经归零
