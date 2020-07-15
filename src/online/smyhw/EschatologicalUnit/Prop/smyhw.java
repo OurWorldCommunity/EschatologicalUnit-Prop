@@ -104,6 +104,7 @@ public class smyhw extends JavaPlugin implements Listener
                 	configer.set("items."+args[1]+".anyItem", false);
                 	configer.set("items."+args[1]+".time", 60);
                 	configer.set("items."+args[1]+".msg", "剩余时间");
+                	configer.set("items."+args[1]+".consume", false);
                 	configer.set("items."+args[1]+".cmd", new ArrayList());
                 	saveConfig();
                 	sender.sendMessage(prefix+"设置成功，您可能需要重载服务器");
@@ -155,13 +156,18 @@ public class smyhw extends JavaPlugin implements Listener
 
 class ItemData extends BukkitRunnable
 {
+	//需要匹配的物品
 	public ItemStack data;
+	//总时间
 	public int time;
+	//记录玩家剩余时间
 	public HashMap<String,Integer> PlayerTimeMap = new HashMap<String,Integer>();
 	public String ID;
 	public String msg;
 	public boolean anyItem;
 	public boolean anyLoc;
+	//是否消耗物品
+	public boolean consume;
 	public int x;
 	public int y;
 	public int z;
@@ -173,6 +179,7 @@ class ItemData extends BukkitRunnable
 		time = smyhw.configer.getInt("items."+ID+".time");
 		anyItem = smyhw.configer.getBoolean("items."+ID+".anyItem");
 		anyLoc = smyhw.configer.getBoolean("items."+ID+".anyLoc");
+		consume = smyhw.configer.getBoolean("items."+ID+".consume");
 		x = smyhw.configer.getInt("items."+ID+".Loc.x");
 		y = smyhw.configer.getInt("items."+ID+".Loc.y");
 		z = smyhw.configer.getInt("items."+ID+".Loc.z");
@@ -204,11 +211,27 @@ class ItemData extends BukkitRunnable
 			}
 			if(!anyItem)
 			{//筛选 物品
-				if(p.getInventory().getItemInMainHand() .equals( data)) {}else{reset(p.getName());continue;}
+				ItemStack  Player_inv  = p.getInventory().getItemInMainHand();
+				ItemStack tar = data.clone();
+				if(!Player_inv .equals( tar)) 
+				{
+					//将目标物品堆数量与玩家物品堆同步
+					tar.setAmount(Player_inv.getAmount());
+					//如果还是不等，那就gg
+					if(!Player_inv .equals( tar)) {reset(p.getName());continue;}
+					//如果这时两个物品堆相等，那就判断玩家物品堆数量是否大于原目标物品堆
+					if(Player_inv.getAmount()<data.getAmount()) 
+					{reset(p.getName());continue;}//如果小于，gg
+					//否则为物品匹配，继续处理
+				}
+				else
+				{reset(p.getName());continue;}
 			}
 			if(PlayerTimeMap.get(p.getName())!=null && PlayerTimeMap.get(p.getName()) <= 0 )
 			{//是否计时已经归零
+				//将计时重置
 				PlayerTimeMap.put(p.getName(), time);
+				//获取并执行目录指令
 				List<String> cmdList = smyhw.configer.getStringList("items."+ID+".cmd");
 				for(String cmd : cmdList)
 				{

@@ -36,3 +36,5 @@ items:
     - say 使用完成
 #持续时显示在屏幕上的title
     msg: 测试语句
+#是否消耗物品(仅在anyItem为false时有效)
+    consume: false
