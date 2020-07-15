@@ -231,6 +231,21 @@ class ItemData extends BukkitRunnable
 			{//是否计时已经归零
 				//将计时重置
 				PlayerTimeMap.put(p.getName(), time);
+				if(consume)
+				{//处理消耗玩家手上的物品
+					ItemStack  Player_inv  = p.getInventory().getItemInMainHand();
+					ItemStack tar = data.clone();
+					if(Player_inv.getAmount()>tar.getAmount())
+					{//如果玩家手上的物品比目标多，就减一下数量
+						Player_inv.setAmount(Player_inv.getAmount()-tar.getAmount());
+						p.getInventory().setItemInMainHand(Player_inv);;
+					}
+					else
+					{//否则就直接给删成AIR,反正数量不足的不会运行到这里
+						ItemStack temp1 = new ItemStack(org.bukkit.Material.AIR);
+						p.getInventory().setItemInMainHand(temp1);
+					}
+				}
 				//获取并执行目录指令
 				List<String> cmdList = smyhw.configer.getStringList("items."+ID+".cmd");
 				for(String cmd : cmdList)
