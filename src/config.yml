@@ -10,11 +10,13 @@ config:
 #数据信息
 items:
   test:
- #是否忽视位置限制
-    anyLoc: true  
-#是否忽视手上物品限制
-    anyItem: false  
-#物品信息(请使用euP set <ID> 来将你手上的物品添加至此)
+    #是否启用
+    active: false
+    #是否忽视手上物品限制
+    anyItem: false
+    #物品信息(请使用euP set <ID> 来将你手上的物品添加至此)
+    ###  !!!注意：若mc版本差距过大，物品信息可能不通用  ！！！###
+    ###例如，该示例信息保存自1.12.2，但是它在1.20不可用！！！###
     data:   
       type: IRON_BARDING
       meta:
@@ -23,18 +25,31 @@ items:
         display-name: test
         lore:
         - test
-#位置限制
+    #是否忽视位置限制
+    anyLoc: true
+    #位置限制（需要anyLoc为false）
     Loc:
+      #是否仅限制世界（若为true，则不限制坐标，仅限制世界）
+      only_world: true
+      world: test_world
       x: 100
       y: 100
       z: 100
-#持续多长时间执行指令
-    time: 60   
-#该条目达成后执行的指令
-#%player%变量代表玩家名称
+    #检测周期(单位tick)
+    #即每多少tick检查玩家是否处于蹲下(按住shift)的状态
+    #理想值是1，如果这导致了性能问题，适当增大这个值...
+    cycle_time: 10
+    #shift持续几个周期后执行指令
+    time: 2
+    #该条目达成后执行的指令
+    #%player%变量代表玩家名称
     cmd:
     - say 使用完成
-#持续时显示在屏幕上的title
+    #持续时显示在屏幕上的title
     msg: 测试语句
-#是否消耗物品(仅在anyItem为false时有效)
+    #是否消耗物品(仅在anyItem为false时有效)
     consume: false
+    #是否需要玩家拥有某权限（注释该条目以禁用）
+    #permission: super_item.use
+    #若玩家权限不足，在屏幕上显示什么文本？
+    permission_denied_msg: "PERMISSION DENIED/权限不足"
