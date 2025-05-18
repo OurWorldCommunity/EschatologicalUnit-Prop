@@ -53,3 +53,5 @@ items:
     #permission: super_item.use
     #若玩家权限不足，在屏幕上显示什么文本？
     permission_denied_msg: "PERMISSION DENIED/权限不足"
+    #是否以玩家身份执行
+    run_as_player: false

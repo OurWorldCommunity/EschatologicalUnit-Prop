@@ -101,6 +101,7 @@ public class smyhw extends JavaPlugin implements Listener {
                     configer.set("items." + args[1] + ".consume", false);
                     configer.set("items." + args[1] + ".cycle_time", 10);
                     configer.set("items." + args[1] + ".cmd", new ArrayList());
+                    configer.set("items." + args[1] + ".run_as_player", false);
                     saveConfig();
                     sender.sendMessage(prefix + "设置成功，您可能需要重载服务器");
                     return true;

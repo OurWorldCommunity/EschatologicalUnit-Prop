@@ -40,9 +40,14 @@ class itemData extends BukkitRunnable {
     //若权限不足，显示的提示信息
     public String permission_denied_msg;
 
+    //循环时间
     public int cycle_time;
 
+    //执行指令列表
     List<String> cmdList;
+
+    //是否以玩家身份执行
+    Boolean run_as_player = false;
 
     public itemData(String ID,int delay_index) {
         this.ID = ID;
@@ -66,6 +71,7 @@ class itemData extends BukkitRunnable {
         cmdList = smyhw.configer.getStringList("items." + ID + ".cmd");
         activation = smyhw.configer.getBoolean("items." + ID + ".activation",true);
         permission_denied_msg = smyhw.configer.getString("items." + ID + ".permission_denied_msg","PERMISSION DENIED/权限不足");
+        run_as_player = smyhw.configer.getBoolean("items." + ID + ".run_as_player",false);
         smyhw.loger.info("加载物品<"+ID+">,检测间隔 -> "+cycle_time+"ticks * "+time+" = "+(cycle_time*time/20.0)+"秒");
         if(data == null){
             smyhw.loger.warning("注意，<"+ID+">所指定的物品信息无效！");
@@ -173,7 +179,11 @@ class itemData extends BukkitRunnable {
             //执行目标指令
             for (String cmd : cmdList) {
                 cmd = cmd.replaceAll("%player%", p.getName());
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                if (this.run_as_player){
+                    p.performCommand(cmd);
+                }else{
+                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                }
             }
 
         }
